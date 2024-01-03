@@ -6,11 +6,13 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 @Service
+@Transactional
 public class UserService {
 	
 	@Autowired
@@ -38,7 +40,20 @@ public class UserService {
 
 	public void save(User user) {
 		
-		encodePassword(user); 
+		boolean isUpdatingUser = (user.getId() != null); 
+		
+		if (isUpdatingUser) {
+			User existingUser = userRepo.findById(user.getId()).get(); 
+			
+			if(user.getPassword().isEmpty()) {
+				user.setPassword(existingUser.getPassword());
+			}else {
+				encodePassword(user); 
+			}
+		}else {
+			encodePassword(user); 
+		}
+		
 		userRepo.save(user); 
 		
 	}
@@ -50,11 +65,26 @@ public class UserService {
 		
 	}
 	
-	public boolean isEmailUnique(String email) {
+	public boolean isEmailUnique(Integer id, String email) {
 		
 		User user = userRepo.getUserByEmail(email); 
 		
-		return user == null; 
+		if(user == null) return true; 
+		
+		boolean isCreatingNew = (id == null); 
+		
+		if(isCreatingNew) {
+			// in creating new mode 
+			if(user != null) return false; 
+		}else {
+			
+			if(user.getId() != id) {
+				return false; 
+			}
+		}
+		
+		
+		return true; 
 		
 //		if(user != null) {
 //			return false; 
@@ -74,6 +104,23 @@ public class UserService {
 			
 			throw new UserNotFoundException("Could not find any user with ID " + id); 
 		}
+	}
+	
+	public void delete(Integer id) throws UserNotFoundException {
+		
+		Long countById = userRepo.countById(id); 
+		
+		if(countById == 0 || countById == null) {
+			
+			throw new UserNotFoundException("Could not find any user with ID " + id); 
+		}
+		
+		userRepo.deleteById(id);
+	}
+	
+	public void updateUserEnabledStatus(Integer id, boolean enabled) {
+		
+		userRepo.updateEnabledStatus(id, enabled);
 	}
 	
 
