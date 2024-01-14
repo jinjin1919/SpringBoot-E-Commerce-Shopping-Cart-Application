@@ -65,6 +65,7 @@ public class UserController {
 		model.addAttribute("sortField", sortField); 
 		model.addAttribute("sortDir", sortDir); 
 		model.addAttribute("reverseSortDir", reverseSortDir); 
+		model.addAttribute("keyword", keyword); 
 		
 		return "users"; 
 	}
