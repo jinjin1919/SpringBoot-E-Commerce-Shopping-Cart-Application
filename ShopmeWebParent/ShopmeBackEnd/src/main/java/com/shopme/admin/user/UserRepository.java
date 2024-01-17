@@ -21,7 +21,7 @@ public interface UserRepository extends CrudRepository<User, Integer>, PagingAnd
 	@Modifying
 	public void updateEnabledStatus(Integer id, boolean enabled);
 	
-	@Query("SELECT u FROM User u WHERE u.firstName LIKE %?1% OR u.lastName LIKE %?1% OR u.email LIKE %?1%")
+	@Query("SELECT u FROM User u WHERE CONCAT(u.id, ' ', u.email, ' ', u.firstName, ' ', u.lastName) LIKE %?1%")
 	public Page<User> findAll(String keyword, Pageable pageable); 
 
 //	public User save(User userNamHM);
