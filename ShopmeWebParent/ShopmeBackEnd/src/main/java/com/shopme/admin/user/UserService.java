@@ -33,6 +33,9 @@ public class UserService {
 	
 	public List<User> listAll() {
 		
+		Iterable<User> lstUsers = userRepo.findAll(Sort.by("firstName").ascending()); 
+		lstUsers.forEach(u -> System.out.println(u));
+		
 		return (List<User>) userRepo.findAll(Sort.by("firstName").ascending()); 
 	}
 	
