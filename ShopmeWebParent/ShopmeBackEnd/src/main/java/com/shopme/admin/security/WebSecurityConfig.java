@@ -43,6 +43,7 @@ public class WebSecurityConfig {
 		
 		http.authorizeHttpRequests((authz) -> authz
 				
+				.requestMatchers("/users/**").hasAuthority("Admin")
 				.anyRequest().authenticated()
 				
 				).formLogin( form -> form 
