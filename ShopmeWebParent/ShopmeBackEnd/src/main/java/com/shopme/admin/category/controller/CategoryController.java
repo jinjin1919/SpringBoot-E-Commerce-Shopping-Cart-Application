@@ -23,7 +23,7 @@ public class CategoryController {
 		
 		model.addAttribute("listCategories", listCategories); 
 		
-		return "category"; 
+		return "categories/categories"; 
 	}
 
 }
