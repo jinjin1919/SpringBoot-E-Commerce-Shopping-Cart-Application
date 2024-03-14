@@ -14,16 +14,30 @@ import com.shopme.common.entity.Category;
 public class CategoryController {
 	
 	@Autowired
-	CategoryService categoryService; 
+	CategoryService service; 
 	
 	@GetMapping("/categories")
 	public String listByCategories(Model model) {
 		
-		List<Category> listCategories = categoryService.listAllCategories(); 
+		List<Category> listCategories = service.listAllCategories(); 
 		
 		model.addAttribute("listCategories", listCategories); 
 		
 		return "categories/categories"; 
 	}
+	
+	@GetMapping("/categories/new") 
+	public String newCategory(Model model) {
+		List<Category> listCategories = service.listCategoriesUsedInForm(); 
+		
+		
+		model.addAttribute("category", new Category()); 
+		model.addAttribute("listCategories", listCategories); 
+		model.addAttribute("pageTitle", "Create New Category");
+		return "categories/category_form"; 
+	}
+	
+	
+	
 
 }
