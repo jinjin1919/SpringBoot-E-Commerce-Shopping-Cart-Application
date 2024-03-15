@@ -15,9 +15,52 @@ public class CategoryService {
 	@Autowired
 	CategoryRepository repo; 
 	
-	public List<Category> listAllCategories() {
+	public List<Category> listAll() {
 		
-		return (List<Category>) repo.findAll(); 
+		List<Category> rootCategories = repo.findRootCategories(); 
+		
+		return listHierarchicalCategories(rootCategories); 
+	}
+	
+	private List<Category> listHierarchicalCategories(List<Category> rootCategories) {
+		
+		List<Category> hierarchicalCategories = new ArrayList<>(); 
+		
+		for(Category rootCategory : rootCategories) {
+			
+			hierarchicalCategories.add(Category.copyFull(rootCategory)); 
+			
+			Set<Category> children = rootCategory.getChildren(); 
+			
+			for (Category subCategory : children) {
+				String name = "--" + subCategory.getName(); 
+				hierarchicalCategories.add(Category.copyFull(subCategory, name)); 
+				
+				listSubHierarchicalCategories(hierarchicalCategories, subCategory, 1); 
+			}
+			
+		}
+		
+		return hierarchicalCategories; 
+	}
+	
+	private void listSubHierarchicalCategories(List<Category> hierarchicalCategories, 
+			Category parent, int subLevel) {
+		
+		Set<Category> children = parent.getChildren(); 
+		int newSubLevel = subLevel + 1;  
+		
+		for(Category subCategory : children) {
+			String name = ""; 
+			for(int i=0; i < newSubLevel; i++) {
+				
+				name += "--"; 
+			}
+			name += subCategory.getName();
+			hierarchicalCategories.add(Category.copyFull(subCategory, name)); 
+			
+			listSubHierarchicalCategories(hierarchicalCategories, subCategory, newSubLevel); 
+		}
 	}
 	
 	public Category save(Category category) {
@@ -38,7 +81,7 @@ public class CategoryService {
 				for(Category subCategory: children) {
 					String name = "--" + subCategory.getName(); 
 					categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name)); 
-					listChildren(subCategory, 1, categoriesUsedInForm); 
+					listSubCategoriesUsedInForm(subCategory, 1, categoriesUsedInForm); 
 				}
 			}
 		}
@@ -46,7 +89,7 @@ public class CategoryService {
 		return categoriesUsedInForm; 
 	}
 	
-	private void listChildren(Category parent, int subLevel, List<Category> categoriesUsedInForm) {
+	private void listSubCategoriesUsedInForm(Category parent, int subLevel, List<Category> categoriesUsedInForm) {
 		
 		int newSubLevel = subLevel + 1;  
 		
@@ -61,7 +104,7 @@ public class CategoryService {
 			name += subCategory.getName();
 			categoriesUsedInForm.add(Category.copyIdAndName(subCategory.getId(), name)); 
 			
-			listChildren(subCategory, newSubLevel, categoriesUsedInForm); 
+			listSubCategoriesUsedInForm(subCategory, newSubLevel, categoriesUsedInForm); 
 		}
 	}
 	
