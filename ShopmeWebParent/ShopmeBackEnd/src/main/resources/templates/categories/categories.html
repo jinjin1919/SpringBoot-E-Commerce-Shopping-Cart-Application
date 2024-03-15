@@ -75,8 +75,8 @@
 					<td>[[${category.enabled}]]</td>
 					
 					<td>
-						<a class="fas fa-edit fa-2x icon-green"
-							title="Edit this category"></a>
+						<a class="fas fa-edit fa-2x icon-green" th:href="@{'/categories/edit/'+ ${category.id}}"
+							title="Edit this category" ></a>
 						
 						&nbsp; 
 						<a class="fas fa-trash fa-2x icon-dark link-delete"
