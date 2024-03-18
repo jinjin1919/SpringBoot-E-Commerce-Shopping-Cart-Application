@@ -43,10 +43,15 @@ public class Category {
 
 	public Category() {
 		
+	}	
+	
+	public Category(Integer id, String name, String alias) {
+	
+		this.id = id;
+		this.name = name;
+		this.alias = alias;
 	}
-	
-	
-	
+
 	public static Category copyIdAndName(Category category) {
 		Category copyCategory = new Category(); 
 		copyCategory.setId(category.getId());
