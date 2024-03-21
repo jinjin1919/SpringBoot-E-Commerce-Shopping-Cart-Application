@@ -16,7 +16,10 @@ import com.shopme.admin.user.UserNotFoundException;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class CategoryService {
 	
 	@Autowired
@@ -189,6 +192,11 @@ public class CategoryService {
 		
 		return sortedChildren; 
 		
+	}
+	
+	public void updateCategoryEnabledStatus(Integer id, boolean enabled) {
+		
+		repo.updateEnabledStatus(id, enabled);
 	}
 	
 	
