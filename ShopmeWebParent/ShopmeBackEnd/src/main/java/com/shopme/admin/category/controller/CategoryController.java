@@ -20,6 +20,7 @@ import com.shopme.admin.category.CategoryNotFoundException;
 import com.shopme.admin.category.CategoryPageInfo;
 import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.user.UserNotFoundException;
+import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
@@ -49,6 +50,13 @@ public class CategoryController {
 		CategoryPageInfo pageInfo = new CategoryPageInfo(); 
 		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword); 
 		
+		long startCount = (pageNum - 1) * service.ROOT_CATEGORIES_PER_PAGE + 1; 
+		long endCount = startCount + service.ROOT_CATEGORIES_PER_PAGE - 1; 
+		
+		if(endCount > pageInfo.getTotalElements()) {
+			endCount = pageInfo.getTotalElements(); 
+		}
+		
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc"; 
 		
 		model.addAttribute("totalPages", pageInfo.getTotalPages()); 
@@ -57,6 +65,9 @@ public class CategoryController {
 		model.addAttribute("sortField", "name"); 
 		model.addAttribute("sortDir", sortDir); 
 		model.addAttribute("keyword", keyword); 
+		
+		model.addAttribute("startCount", startCount); 
+		model.addAttribute("endCount", endCount); 
 		
 		model.addAttribute("listCategories", listCategories); 
 		model.addAttribute("reverseSortDir", reverseSortDir); 
