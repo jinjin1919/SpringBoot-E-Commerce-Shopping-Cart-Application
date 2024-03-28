@@ -28,6 +28,15 @@ public class CategoryService {
 	@Autowired
 	CategoryRepository repo; 
 	
+	
+	public List<Category> listAll() {
+		
+		Sort sort = Sort.by("name"); 
+		List<Category> rootCategories = repo.findRootCategories(sort.ascending()); 
+		
+		return listHierarchicalCategories(rootCategories, "asc"); 
+	}
+	
 	public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum, String sortDir, String keyword) {
 		
 		Sort sort = Sort.by("name"); 

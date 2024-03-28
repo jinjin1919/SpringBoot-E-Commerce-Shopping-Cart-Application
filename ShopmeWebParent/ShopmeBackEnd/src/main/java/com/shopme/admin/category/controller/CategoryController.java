@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.category.CategoryCsvExporter;
 import com.shopme.admin.category.CategoryNotFoundException;
 import com.shopme.admin.category.CategoryPageInfo;
 import com.shopme.admin.category.CategoryService;
@@ -24,6 +25,8 @@ import com.shopme.admin.user.UserService;
 import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class CategoryController {
@@ -176,6 +179,16 @@ public class CategoryController {
 		return "redirect:/categories"; 
 		
 		
+	}
+	
+	@GetMapping("/categories/export/csv")
+	public void exportToExcel(HttpServletResponse response) throws IOException {
+		
+		List<Category> lstCategories = service.listAll(); 
+		
+		CategoryCsvExporter exporter = new CategoryCsvExporter(); 
+		
+		exporter.export(lstCategories, response); 
 	}
 	
 	

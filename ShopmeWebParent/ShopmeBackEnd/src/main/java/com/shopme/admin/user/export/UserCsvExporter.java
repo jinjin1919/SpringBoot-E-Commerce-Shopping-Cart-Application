@@ -10,6 +10,7 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.IOException;
 import java.text.*;
 
+import com.shopme.admin.AbstractExporter;
 import com.shopme.common.entity.User;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ public class UserCsvExporter extends AbstractExporter {
 	
 	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
 		
-		super.setResponseHeader(response, "text/csv", ".csv");
+		super.setResponseHeader(response, "text/csv", ".csv", "users");
 		
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE); 
 		
