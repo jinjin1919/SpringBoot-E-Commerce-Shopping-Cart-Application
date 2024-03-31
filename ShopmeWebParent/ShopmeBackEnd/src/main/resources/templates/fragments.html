@@ -20,9 +20,9 @@
 		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 	</div>
 	
-	<th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+	<th th:fragment="column_link(moduleURL, fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
 		<a class="text-white"
-			th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} +'&sortDir=' + ${sortField != fieldName? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+			th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName} +'&sortDir=' + ${sortField != fieldName? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
 			[[${columnLabel}]]
 
 		</a>
@@ -80,7 +80,7 @@
 	</div>
 	</div>
 	
-	<div th:fragment="search_form(moduleURL)">
+	<div th:fragment="search_form_and_message(moduleURL)">
 		<form th:action="@{${moduleURL}}" class="form-inline m-3">
 			<input type="hidden" name="sortField" th:value="${sortField}" />
 			<input type="hidden" name="sortDir" th:value="${sortDir}" />
@@ -97,6 +97,11 @@
 			</button>
 			
 		</form>
+		
+		<div th:if="${message != null}" class="alert alert-success text-center">
+		[[${message}]]
+		
+		</div>
 	</div>
 	
 
