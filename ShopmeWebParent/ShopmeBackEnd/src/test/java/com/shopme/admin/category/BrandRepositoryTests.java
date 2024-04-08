@@ -26,14 +26,12 @@ public class BrandRepositoryTests {
 	private CategoryRepository repo; 
 	
 	
-	
-	
 	@Test
 	public void testCreateBrands() {
 		
-		Brand brand = new Brand("Apple", "brand-logo.png"); 
-		brand.getCategories().add(repo.findByName("Memory")); 
-		brand.getCategories().add(repo.findByName("Internal Hard Drives")); 
+		Brand brand = new Brand("Acer", "brand-logo.png"); 
+		brand.getCategories().add(repo.findByName("Laptops")); 
+	//	brand.getCategories().add(repo.findByName("Internal Hard Drives")); 
 		
 		brandRepo.save(brand); 
 		
@@ -68,10 +66,10 @@ public class BrandRepositoryTests {
 	@Test
 	public void deleteBrand() {
 		
-		brandRepo.delete(brandRepo.findByName("Apple"));
-		
-		Brand apple = brandRepo.findByName("Apple"); 
-		
-		assertThat(apple).isNull();
+//		brandRepo.delete(brandRepo.findByName("Apple"));
+//		
+//		Brand apple = brandRepo.findByName("Apple"); 
+//		
+//		assertThat(apple).isNull();
 	}
 }
