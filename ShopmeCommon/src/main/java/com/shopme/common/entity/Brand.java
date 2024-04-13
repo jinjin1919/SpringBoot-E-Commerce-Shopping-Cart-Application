@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "brands")
@@ -80,5 +81,11 @@ public class Brand {
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
 	} 
+	
+	@Transient
+	public String getImagePath() {
+		if (this.id == null) return "/images/image-thumbnail.png"; 
+		return "/brand-logo/" + this.id + "/" + this.logo; 
+	}
 	
 }
