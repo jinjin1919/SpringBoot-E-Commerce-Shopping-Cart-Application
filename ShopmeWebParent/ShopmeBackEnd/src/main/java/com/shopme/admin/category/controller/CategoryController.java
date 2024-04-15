@@ -177,8 +177,6 @@ public class CategoryController {
 			
 		}
 		return "redirect:/categories"; 
-		
-		
 	}
 	
 	@GetMapping("/categories/export/csv")
