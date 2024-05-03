@@ -28,6 +28,29 @@ public class BrandService {
 	}
 	
 	
+	public String checkUnique(Integer id, String name) {
+		
+		boolean isCreatingNew = (id == null || id == 0);
+		
+		Brand brandByName = repo.findByName(name); 
+		
+		if(isCreatingNew) {
+			
+			if(brandByName != null) {
+				return "DuplicateName"; 
+			}
+		} else {
+			
+			if(brandByName != null && brandByName.getId() != id) {
+				return "DuplicateName"; 
+			}
+			
+		}
+		
+		return "OK"; 
+	}
+	
+	
 	public Brand get(Integer id) throws BrandNotFoundException {
 		// TODO Auto-generated method stub
 		try {
