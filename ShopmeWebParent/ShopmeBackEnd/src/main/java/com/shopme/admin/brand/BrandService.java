@@ -4,14 +4,20 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.shopme.admin.category.CategoryNotFoundException;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Category;
+import com.shopme.common.entity.User;
 
 @Service
 public class BrandService {
+	
+	public static final int BRANDS_PER_PAGE = 5; 
 
 	@Autowired
 	private BrandRepository repo; 
@@ -19,7 +25,23 @@ public class BrandService {
 	
 	public List<Brand> listAll() {
 		
-		return (List<Brand>) repo.findAll(); 
+		return (List<Brand>) repo.findAll(Sort.by("name")); 
+	}
+	
+	
+	public Page<Brand> listByPage(int pageNumber, String sortField, String sortDir, String keyword) {
+		
+		Sort sort = Sort.by(sortField); 
+		
+		sort = sortDir.equals("asc") ? sort.ascending(): sort.descending(); 
+		
+		PageRequest pageable = PageRequest.of(pageNumber - 1, BRANDS_PER_PAGE, sort); 
+		
+		if(keyword != null) {
+			return repo.search(keyword, pageable); 
+		}
+		
+		return repo.findAll(pageable); 
 	}
 	
 	
