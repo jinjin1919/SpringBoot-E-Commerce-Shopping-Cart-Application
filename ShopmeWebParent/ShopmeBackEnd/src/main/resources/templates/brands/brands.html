@@ -16,7 +16,7 @@
 	
 	
 	
-	<div th:replace="fragments :: search_form_and_message('/categories/page/1')"></div>
+	<div th:replace="fragments :: search_form_and_message('/brands/page/1')"></div>
 	
 	
 	<div class="full-details">
@@ -25,12 +25,12 @@
 			<thead class="thead-dark">
 				<tr>
 					
-					<th>
+					<th class="hideable-column">
 						Brand ID
 					</th>
 					<th>Logo</th>
 					
-					<th>Brand Name</th>
+					<th th:replace="fragments :: column_link('/brands', 'name', 'Brand Name', 'none')" />
 					
 					<th>Categories</th>
 					<th></th>
@@ -42,7 +42,7 @@
 				
 				<tr th:each="brand : ${listBrands}">
 					
-					<td>[[${brand.id}]]</td>
+					<td class="hideable-column">[[${brand.id}]]</td>
 					<td>
 						<img th:src="@{${brand.imagePath}}" style="width: 100px" class="img-fluid" />
 					</td>
@@ -58,12 +58,12 @@
 					
 					<td>
 						<a class="fas fa-edit fa-2x icon-green" th:href="@{'/brands/edit/'+ ${brand.id}}"
-							title="Edit this category" ></a>
+							title="Edit this Brand" ></a>
 						
 						&nbsp;
 				
 						<a class="fas fa-trash fa-2x icon-dark link-delete" th:href="@{'/brands/delete/' + ${brand.id}}"
-							th:entityId="${brand.id}" title="Delete this category"></a>
+							th:entityId="${brand.id}" title="Delete this Brand"></a>
 							
 					</td>
 				</tr>
@@ -72,6 +72,35 @@
 			
 		</table>	
 	</div>
+	
+	
+	<div class="less-details">
+		<div th:each="brand : ${listBrands}" class="row m-1">
+			<div class="col-4">
+					<img th:src="@{${brand.imagePath}}" style="width: 100px" class="img-fluid" />
+				
+			</div>
+			<div class="col-8">
+				<div>[[${brand.name}]]</div>
+		
+				<div class="mt-2">
+					
+					
+					<a class="fas fa-edit fa-2x icon-green" th:href="@{'/brands/edit/'+ ${brand.id}}"
+							title="Edit this Brand" ></a>
+						
+						&nbsp;
+				
+						<a class="fas fa-trash fa-2x icon-dark link-delete" th:href="@{'/brands/delete/' + ${brand.id}}"
+							th:entityId="${brand.id}" title="Delete this Brand"></a>
+				
+				</div>
+			</div>
+			
+			<div>&nbsp;</div>
+		</div>
+	</div>
+	
 	
 	<div th:replace="modal_fragments :: confirm_modal"></div>
 	
