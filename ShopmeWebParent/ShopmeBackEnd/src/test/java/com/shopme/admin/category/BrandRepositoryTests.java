@@ -38,6 +38,14 @@ public class BrandRepositoryTests {
 	}
 	
 	@Test
+	public void testFindAll() {
+		Iterable<Brand> brands = brandRepo.findAll(); 
+		brands.forEach(System.out::println);
+		
+		assertThat(brands).isNotEmpty(); 
+	}
+	
+	@Test
 	public void getBrandById() {
 		
 		Brand brand = brandRepo.findById(2).get();

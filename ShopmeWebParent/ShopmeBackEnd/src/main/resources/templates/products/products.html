@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Products - Shopme Admin')"/>
+<body>
+<div class="container-fluid"> 
+	
+	<div th:replace="navigation :: menu"></div>
+	
+	<div>
+		<h2> Manage Products </h2>
+		<a th:href="@{/products/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+		
+		<a th:href="@{/products/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+	
+	</div>
+	
+	
+	
+	<div th:replace="fragments :: search_form_and_message('/products/page/1')"></div>
+	
+	
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			
+			<thead class="thead-dark">
+				<tr>
+					
+					<th>
+						ID
+					</th>
+					<th>Main Image</th>
+					
+					<th>Product Name</th>
+					
+					<th>Brand</th>
+					<th>Category</th>
+					<th>Enabled</th>
+					<th></th>
+				</tr>
+				
+			</thead>
+			
+			<tbody>
+				
+				<tr th:each="product : ${listProducts}">
+					
+					<td>[[${product.id}]]</td>
+					<td>
+						
+					</td>
+					<td>[[${product.name}]]</td>
+					<td>[[${product.brand.name}]]</td>
+					<td>[[${product.category.name}]]</td>
+					<td>
+						
+						<a th:if="${product.enabled == true}" class="fas fa-check-circle fa-2x icon-green" 
+							th:href="@{'/products/' + ${product.id} + '/enabled/false'}" 
+							title="Disable this product"></a>
+						<a th:if="${product.enabled == false}" class="fas fa-circle fa-2x icon-dark" 
+							th:href="@{'/products/' + ${product.id} + '/enabled/true'}" 
+							title="Enable this product"></a>
+					</td>
+					
+					<td>
+						<a class="fas fa-file-alt fa-2x icon-green" 
+							th:href="@{'/products/detail/' + ${product.id}}"
+							title="View details of this product"></a>
+						
+						<a class="fas fa-edit fa-2x icon-green" th:href="@{'/products/edit/'+ ${product.id}}"
+							title="Edit this Product" ></a>
+						
+						&nbsp;
+				
+						<a class="fas fa-trash fa-2x icon-dark link-delete" th:href="@{'/products/delete/' + ${product.id}}"
+							th:entityId="${product.id}" title="Delete this Product"></a>
+							
+					</td>
+				</tr>
+				
+			</tbody>
+			
+		</table>	
+	</div>
+	
+	
+	<div th:replace="modal_fragments :: confirm_modal"></div>
+	
+			
+</div>
+<script type="text/javascript"> 
+	
+	$(document).ready(function() {
+		$(".link-delete").on("click", function(e) {
+			e.preventDefault(); 
+			//alert($(this).attr("href")); 
+			entityId = $(this).attr("entityId"); 
+			
+			$("#yesButton").attr("href", $(this).attr("href")); 
+			$("#confirmText").text("Are you sure you want to delete this Brand" + " ID " + entityId + " ?"); 
+			$("#confirmModal").modal(); 
+			
+		}); 
+	});
+	
+	function clearFilter() {
+		window.location = "[[@{/brands}]]"; 
+	}
+	
+</script>
+	
+    
+</body>
+</html>

@@ -44,6 +44,11 @@ public class Brand {
 		this.name = name;
 	}
 	
+	public Brand(Integer id, String name) {
+		this.name = name;
+		this.id = id;  
+	}
+	
 	public Brand(String name, String logo) {
 		this.name = name;
 		this.logo = logo; 
@@ -86,6 +91,11 @@ public class Brand {
 	public String getImagePath() {
 		if (this.id == null) return "/images/image-thumbnail.png"; 
 		return "/brand-logo/" + this.id + "/" + this.logo; 
+	}
+
+	@Override
+	public String toString() {
+		return "Brand [id=" + id + ", name=" + name + ", categories=" + categories + "]";
 	}
 	
 }
