@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.shopme.admin.category.CategoryNotFoundException;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Product;
 
@@ -66,6 +67,17 @@ public class ProductService {
 	public void updateProductEnabledStatus(Integer id, boolean enabled) {
 		
 		repo.updateEnabledStatus(id, enabled);
+	}
+	
+	public void delete(Integer id) throws ProductNotFoundException {
+		
+		Long countById = repo.countById(id); 
+		
+		if(countById == 0 || countById == null) {
+			throw new ProductNotFoundException("Could not find category with ID: " + id); 
+		}
+		
+		repo.deleteById(id);
 	}
 	
 	
